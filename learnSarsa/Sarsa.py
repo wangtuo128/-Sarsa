@@ -1,5 +1,6 @@
 import numpy as np
 import gym
+import time
 
 
 def main():
@@ -8,11 +9,13 @@ def main():
         dim_of_action=environment.action_space.n,
         dim_of_state=environment.observation_space.n,
         learning_rate=0.1,
+
+
         gamma=0.9
     )
 
     is_render = False
-    for episode in range(500):
+    for episode in range(300):
         total_reward, total_steps = run_episode(environment, sarsaAgent, is_render)
         print('Episode %s: steps = %s, reward = %.lf' % (episode, total_steps, total_reward))
 
@@ -25,6 +28,7 @@ def main():
 
 # 定义Agent类
 class SarsaAgent:
+
     """
      __init__：实例构造器，首先设置Sarsa算法超参数：
      1. dim_of_action: 动作的维度
@@ -46,7 +50,7 @@ class SarsaAgent:
     """
 
     def SelectAction(self, state):
-        Q_row = self.Q_table[state, :]
+        Q_row = self.Q_table[state, :] 
         max_in_row = np.max(Q_row)
         alternative_action = np.where(Q_row == max_in_row)[0]
         selected_action = np.random.choice(alternative_action)
@@ -81,6 +85,7 @@ def run_episode(environment, sarsaAgent, is_render=False):
         total_steps += 1
         if is_render:
             environment.render()
+
         if done:
             break
     return total_reward, total_steps
